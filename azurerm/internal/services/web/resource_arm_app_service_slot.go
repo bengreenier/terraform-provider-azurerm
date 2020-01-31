@@ -191,10 +191,10 @@ func resourceArmAppServiceSlotCreateUpdate(d *schema.ResourceData, meta interfac
 	t := d.Get("tags").(map[string]interface{})
 	affinity := d.Get("client_affinity_enabled").(bool)
 
-	siteConfig, err := azure.ExpandAppServiceSiteConfig(d.Get("site_config"))
-	if err != nil {
-		return fmt.Errorf("Error expanding `site_config` for App Service Slot %q (Resource Group %q): %s", slot, resourceGroup, err)
-	}
+	// siteConfig, err := azure.ExpandAppServiceSiteConfig(d.Get("site_config"))
+	// if err != nil {
+	// 	return fmt.Errorf("Error expanding `site_config` for App Service Slot %q (Resource Group %q): %s", slot, resourceGroup, err)
+	// }
 	siteEnvelope := web.Site{
 		Location: &location,
 		Tags:     tags.Expand(t),
@@ -202,7 +202,6 @@ func resourceArmAppServiceSlotCreateUpdate(d *schema.ResourceData, meta interfac
 			ServerFarmID:          utils.String(appServicePlanId),
 			Enabled:               utils.Bool(enabled),
 			HTTPSOnly:             utils.Bool(httpsOnly),
-			SiteConfig:            siteConfig,
 			ClientAffinityEnabled: &affinity,
 		},
 	}
